@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function PayTheoryStory() {
   return (
     <>
-      <section className="relative -mt-[100px] overflow-hidden px-4 pb-16 pt-[150px] sm:px-6">
+      <section className="relative -mt-16 overflow-hidden px-4 pb-16 pt-[114px] sm:px-6">
         <div className="aurora pointer-events-none absolute inset-x-0 -top-20 h-[480px] opacity-70" aria-hidden />
         <Reveal className="relative mx-auto max-w-4xl">
           <Link href="/customers/pay-theory" className="eyebrow">Customers / Pay Theory</Link>

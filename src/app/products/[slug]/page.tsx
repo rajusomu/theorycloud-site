@@ -26,7 +26,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   return (
     <>
-      <section className="relative -mt-[100px] overflow-hidden px-4 pb-24 pt-[150px] sm:px-6">
+      <section className="relative -mt-16 overflow-hidden px-4 pb-24 pt-[114px] sm:px-6">
         <div className="aurora pointer-events-none absolute inset-x-0 -top-20 h-[560px] opacity-80" aria-hidden />
         <div className="relative mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1.1fr_1fr] [&>*]:min-w-0">
           <Reveal>

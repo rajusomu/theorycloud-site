@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function UseCasesPage() {
   return (
     <>
-      <section className="relative -mt-[100px] overflow-hidden px-4 pb-16 pt-[150px] sm:px-6">
+      <section className="relative -mt-16 overflow-hidden px-4 pb-16 pt-[114px] sm:px-6">
         <div className="aurora pointer-events-none absolute inset-x-0 -top-20 h-[480px] opacity-70" aria-hidden />
         <Reveal className="relative mx-auto max-w-4xl text-center">
           <p className="eyebrow">Solutions</p>
@@ -33,7 +33,7 @@ export default function UseCasesPage() {
 
       <div className="px-4 sm:px-6">
         {useCases.map((u) => (
-          <section key={u.slug} id={u.slug} className="mx-auto max-w-6xl scroll-mt-28 border-t border-line py-20">
+          <section key={u.slug} id={u.slug} className="mx-auto max-w-6xl scroll-mt-20 border-t border-line py-20">
             <Reveal className="grid gap-12 lg:grid-cols-[1fr_1.1fr] [&>*]:min-w-0">
               <div>
                 <p className="font-mono text-xs text-iris">{u.industry}</p>

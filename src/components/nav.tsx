@@ -21,16 +21,6 @@ export function Nav() {
 
   return (
     <header className="sticky top-0 z-50">
-      <div className="bg-night text-[13px] text-white/80">
-        <div className="mx-auto flex max-w-7xl items-center justify-center gap-3 px-4 py-2">
-          <span className="rounded-full bg-white/10 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-apricot">New</span>
-          <span className="truncate">New: launch branded AI agents for every partner from one setup.</span>
-          <Link href="/use-cases#partner-agents" className="hidden shrink-0 items-center gap-1 text-white hover:underline sm:inline-flex">
-            See how <ArrowRight size={13} />
-          </Link>
-        </div>
-      </div>
-
       <div className={`transition-all duration-300 ${scrolled ? "border-b border-line bg-porcelain/85 backdrop-blur-xl" : "bg-transparent"}`}>
         <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6" aria-label="Main">
           <Link href="/" aria-label="Theory Cloud home" className="text-ink">

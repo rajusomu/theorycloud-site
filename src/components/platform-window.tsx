@@ -86,7 +86,7 @@ export function PlatformTabs() {
   const [active, setActive] = useState(0);
   const p = platformProducts[active];
   return (
-    <section id="platform" className="relative scroll-mt-28 overflow-hidden px-4 py-28 sm:px-6">
+    <section id="platform" className="relative scroll-mt-20 overflow-hidden px-4 py-28 sm:px-6">
       <SectionHead
         eyebrow="The platform"
         title={<>Everything you need to launch AI agents <em>with confidence.</em></>}

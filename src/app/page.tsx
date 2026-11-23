@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       {/* Hero: copy on the left, interactive 3D trust network on the right */}
-      <section className="relative -mt-[100px] overflow-hidden px-4 pb-10 pt-[150px] sm:px-6">
+      <section className="relative -mt-16 overflow-hidden px-4 pb-10 pt-[114px] sm:px-6">
         <div className="aurora pointer-events-none absolute inset-x-0 -top-20 h-[760px]" aria-hidden />
         <div className="grid-dots pointer-events-none absolute inset-0 opacity-40 [mask-image:linear-gradient(to_bottom,black,transparent_70%)]" aria-hidden />
         <div className="relative mx-auto grid max-w-7xl items-center gap-6 lg:grid-cols-[1fr_1.05fr] [&>*]:min-w-0">
@@ -32,7 +32,7 @@ export default function Home() {
               <Button href="/use-cases" variant="ghost">See solutions</Button>
             </Reveal>
           </div>
-          <Reveal delay={0.2} className="relative h-[420px] sm:h-[520px] lg:h-[600px]">
+          <Reveal delay={0.2} className="relative z-30 h-[420px] sm:h-[520px] lg:h-[600px]">
             <HeroCanvas />
           </Reveal>
         </div>

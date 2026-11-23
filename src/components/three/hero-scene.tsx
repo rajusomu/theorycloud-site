@@ -58,7 +58,7 @@ function buildOrder() {
   return order;
 }
 
-function Scene({ onShipped, dark }: { onShipped: () => void; dark: boolean }) {
+function Scene({ dark }: { dark: boolean }) {
   const group = useRef<THREE.Group>(null);
   const baseMat = useRef<THREE.MeshPhysicalMaterial>(null);
   const agentRefs = useRef<(THREE.Group | null)[]>([]);
@@ -168,7 +168,6 @@ function Scene({ onShipped, dark }: { onShipped: () => void; dark: boolean }) {
         if (b.t >= 1) {
           b.state = 2;
           b.t = 0;
-          onShipped();
         }
       } else if (b.state === 2) {
         placed++;
@@ -278,24 +277,17 @@ function Scene({ onShipped, dark }: { onShipped: () => void; dark: boolean }) {
 export default function HeroScene() {
   const { ref, frameloop } = useCanvasLoop<HTMLDivElement>();
   const [theme] = useTheme();
-  const [count, setCount] = useState(0);
   return (
     <div ref={ref} className="relative h-full w-full">
       <Canvas frameloop={frameloop} dpr={[1, 1.75]} camera={{ position: [6.2, 4.2, 8.2], fov: 33 }} gl={{ antialias: true, alpha: true }} onCreated={({ camera }) => camera.lookAt(0, -0.1, 0)}>
         <ambientLight intensity={theme === "dark" ? 0.55 : 0.9} />
         <directionalLight position={[4, 7, 5]} intensity={1.7} />
         <directionalLight position={[-5, 2, -3]} intensity={0.6} color="#c13cff" />
-        <Scene dark={theme === "dark"} onShipped={() => setCount((c) => c + 1)} />
+        <Scene dark={theme === "dark"} />
         <Sparkles count={60} scale={[9, 5, 7]} size={2} speed={0.25} color="#5546ff" opacity={0.4} />
       </Canvas>
 
-      {/* HUD: plain DOM so it stays crisp and readable */}
-      <div className="pointer-events-none absolute left-4 top-4 rounded-2xl border border-paper/80 bg-paper/70 px-4 py-3 backdrop-blur sm:left-6 sm:top-6">
-        <div className="flex items-center gap-2 text-[12px] text-slate">
-          <span className="h-2 w-2 rounded-full bg-verified" /> Components shipped in this demo
-        </div>
-        <div className="display mt-1 text-[1.5rem] tabular-nums">{count.toLocaleString("en-US")}</div>
-      </div>
+      {/* Legend: plain DOM so it stays crisp and readable */}
       <div className="pointer-events-none absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-4 whitespace-nowrap rounded-full border border-paper/80 bg-paper/70 px-4 py-2 text-[12px] text-slate backdrop-blur">
         {[...LEVELS].reverse().map((l) => (
           <span key={l.name} className="flex items-center gap-1.5">
