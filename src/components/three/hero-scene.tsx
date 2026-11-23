@@ -202,7 +202,7 @@ function Bot({ color, dark }: { color: string; dark: boolean }) {
 
 type Brk = { state: 0 | 1 | 2 | 3; t: number; from: THREE.Vector3; agent: number; spin: number; flash: number };
 
-function Scene({ dark }: { dark: boolean }) {
+function Scene({ dark, labelRoot }: { dark: boolean; labelRoot: React.RefObject<HTMLDivElement | null> }) {
   const group = useRef<THREE.Group>(null);
   const baseMat = useRef<THREE.MeshPhysicalMaterial>(null);
   const agentRefs = useRef<(THREE.Group | null)[]>([]);
@@ -268,8 +268,11 @@ function Scene({ dark }: { dark: boolean }) {
 
     const g = group.current;
     if (g) {
-      g.rotation.y += (state.pointer.x * 0.3 + t * 0.05 - g.rotation.y) * 0.04;
-      g.rotation.x += (-state.pointer.y * 0.1 - g.rotation.x) * 0.04;
+      // keep the tilt within the canvas range
+      const px = THREE.MathUtils.clamp(state.pointer.x, -1, 1);
+      const py = THREE.MathUtils.clamp(state.pointer.y, -1, 1);
+      g.rotation.y += (px * 0.3 + t * 0.05 - g.rotation.y) * 0.04;
+      g.rotation.x += (-py * 0.1 - g.rotation.x) * 0.04;
     }
 
     // Bots hover around the build and keep facing it
@@ -438,7 +441,13 @@ function Scene({ dark }: { dark: boolean }) {
             <Bot color={a.color} dark={dark} />
           </group>
           {hovered === i && (
-            <Html center distanceFactor={9} style={{ pointerEvents: "none" }}>
+            <Html
+              center
+              distanceFactor={9}
+              style={{ pointerEvents: "none" }}
+              // mount the label in the scene's own box so it always lands next to the bot
+              portal={labelRoot as React.RefObject<HTMLElement>}
+            >
               <div className="-translate-y-14 whitespace-nowrap rounded-xl border border-line bg-paper/95 px-3 py-2 text-left shadow-xl shadow-black/10 backdrop-blur">
                 <div className="text-[13px] font-semibold text-ink">{a.who}</div>
                 <div className="text-[12px] text-slate">{a.task}</div>
@@ -455,13 +464,29 @@ function Scene({ dark }: { dark: boolean }) {
 export default function HeroScene() {
   const { ref, frameloop } = useCanvasLoop<HTMLDivElement>();
   const [theme] = useTheme();
+
+  // The scene sits above the header (z-index 60). Once it scrolls up under the header it
+  // stops catching the pointer, so header links stay clickable; otherwise bots are interactive.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const HEADER = 64;
+    const onScroll = () => {
+      el.style.pointerEvents = el.getBoundingClientRect().top < HEADER ? "none" : "";
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [ref]);
+
   return (
     <div ref={ref} className="relative h-full w-full">
-      <Canvas frameloop={frameloop} dpr={[1, 1.75]} camera={{ position: [6.2, 4.4, 8.2], fov: 32 }} gl={{ antialias: true, alpha: true }} onCreated={({ camera }) => camera.lookAt(0, -0.05, 0)}>
+      <Canvas
+        frameloop={frameloop} dpr={[1, 1.75]} camera={{ position: [6.2, 4.4, 8.2], fov: 32 }} gl={{ antialias: true, alpha: true }} onCreated={({ camera }) => camera.lookAt(0, -0.05, 0)}>
         <ambientLight intensity={theme === "dark" ? 0.6 : 0.95} />
         <directionalLight position={[4, 7, 5]} intensity={1.8} />
         <directionalLight position={[-5, 3, -3]} intensity={0.6} color="#c13cff" />
-        <Scene dark={theme === "dark"} />
+        <Scene dark={theme === "dark"} labelRoot={ref} />
         <Sparkles count={50} scale={[9, 5, 7]} size={2} speed={0.25} color="#5546ff" opacity={0.35} />
       </Canvas>
 

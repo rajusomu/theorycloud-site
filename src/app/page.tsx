@@ -32,7 +32,7 @@ export default function Home() {
               <Button href="/use-cases" variant="ghost">See solutions</Button>
             </Reveal>
           </div>
-          <Reveal delay={0.2} className="relative z-30 h-[420px] sm:h-[520px] lg:h-[600px]">
+          <Reveal delay={0.2} className="relative z-[60] h-[420px] sm:h-[520px] lg:h-[600px]">
             <HeroCanvas />
           </Reveal>
         </div>

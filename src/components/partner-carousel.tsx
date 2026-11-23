@@ -92,7 +92,7 @@ export function PartnerCarousel() {
       last = now;
       // If something else scrolled the track (arrow buttons, trackpad), continue from there
       if (Math.abs(el.scrollLeft - written) > 2) pos = el.scrollLeft;
-      pos += dt * 0.04;
+      pos += dt * 0.06;
       if (pos >= PERIOD) pos -= PERIOD;
       el.scrollLeft = pos;
       written = el.scrollLeft;
