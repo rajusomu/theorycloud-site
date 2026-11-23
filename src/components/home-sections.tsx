@@ -18,43 +18,10 @@ import {
   Scale,
   Cpu,
   Handshake,
-  CreditCard,
-  Code2,
-  Cloud,
-  Users,
-  Landmark,
-  Boxes,
-  CircleCheck,
 } from "lucide-react";
-import { productValue, products, useCases } from "@/lib/site";
+import { faceTheory, platformProducts, productValue, products } from "@/lib/site";
 import { Reveal, SectionHead } from "./ui";
-
-/* ── Proof bar: real customer + the tools buyers already use ── */
-const hosts = ["Claude Code", "Codex", "Antigravity", "Amazon Web Services", "AWS Lambda", "Amazon EventBridge", "Amazon SQS", "Go", "TypeScript", "Python"];
-
-export function ProofBar() {
-  return (
-    <div className="mx-auto max-w-6xl px-4">
-      <div className="flex flex-col items-center gap-6 md:flex-row md:gap-10">
-        <div className="flex shrink-0 items-center gap-3 rounded-full border border-line bg-white px-4 py-2 text-sm">
-          <CircleCheck size={16} className="text-verified" />
-          <span>
-            In production at <span className="font-semibold">Pay Theory</span>
-          </span>
-        </div>
-        <div className="mask-fade-x w-full overflow-hidden">
-          <div className="flex w-max animate-marquee gap-3 hover:[animation-play-state:paused]">
-            {[...hosts, ...hosts].map((h, i) => (
-              <span key={i} className="rounded-full px-4 py-2 text-sm text-ink/55">
-                {h}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+import { PlatformCanvas } from "./three/lazy";
 
 /* ── The business problem ── */
 const problems = [
@@ -88,7 +55,7 @@ export function Problem() {
 /* ── Platform: tabbed product explorer, business framing ── */
 export function PlatformTabs() {
   const [active, setActive] = useState(0);
-  const p = products[active];
+  const p = platformProducts[active];
   const v = productValue[p.slug];
   return (
     <section id="platform" className="scroll-mt-28 px-4 py-28 sm:px-6">
@@ -99,7 +66,7 @@ export function PlatformTabs() {
       />
       <Reveal className="mx-auto mt-14 max-w-6xl">
         <div role="tablist" aria-label="Products" className="flex gap-1 overflow-x-auto rounded-full border border-line bg-white p-1">
-          {products.map((x, i) => (
+          {platformProducts.map((x, i) => (
             <button
               key={x.slug}
               role="tab"
@@ -134,9 +101,15 @@ export function PlatformTabs() {
                 ))}
               </div>
               <div className="mt-8 flex flex-wrap gap-4 text-sm font-medium">
-                <Link href={`/products/${p.slug}`} className="inline-flex items-center gap-1 text-iris hover:underline">
-                  Explore {p.name} <ArrowRight size={14} />
-                </Link>
+                {p.slug === faceTheory.slug ? (
+                  <Link href={p.docs} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-iris hover:underline">
+                    Explore {p.name} on GitHub <ArrowUpRight size={14} />
+                  </Link>
+                ) : (
+                  <Link href={`/products/${p.slug}`} className="inline-flex items-center gap-1 text-iris hover:underline">
+                    Explore {p.name} <ArrowRight size={14} />
+                  </Link>
+                )}
                 <Link href="/contact" className="inline-flex items-center gap-1 text-ink/70 hover:text-ink">
                   Talk to sales <ArrowUpRight size={14} />
                 </Link>
@@ -144,21 +117,31 @@ export function PlatformTabs() {
             </div>
             <div className="relative">
               <div className="aurora absolute -inset-6 opacity-60" aria-hidden />
-              <div className="on-dark terminal relative rounded-2xl p-6 sm:p-7">
-                <p className="text-[12px] uppercase tracking-[0.14em] text-white/45">What your business gets</p>
-                <ul className="mt-5 space-y-5">
-                  {v.value.map((x, n) => (
-                    <motion.li key={x.title} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + n * 0.1 }} className="flex gap-3">
-                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-iris to-fuchsia">
-                        <Check size={13} className="text-white" />
-                      </span>
-                      <div>
-                        <div className="font-semibold text-white">{x.title}</div>
-                        <div className="mt-0.5 text-[14px] leading-relaxed text-white/60">{x.body}</div>
-                      </div>
-                    </motion.li>
-                  ))}
-                </ul>
+              <div className="on-dark terminal relative overflow-hidden rounded-2xl">
+                {/* Interactive 3D model of what this product does */}
+                <div className="relative h-[260px] sm:h-[300px]">
+                  <div className="grid-dots pointer-events-none absolute inset-0 opacity-25 invert" aria-hidden />
+                  <PlatformCanvas slug={p.slug} />
+                  <span className="pointer-events-none absolute right-4 top-4 rounded-full bg-white/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-white/55">
+                    Drag to rotate
+                  </span>
+                </div>
+                <div className="border-t border-white/10 p-6 sm:p-7">
+                  <p className="text-[12px] uppercase tracking-[0.14em] text-white/45">What your business gets</p>
+                  <ul className="mt-5 space-y-4">
+                    {v.value.map((x, n) => (
+                      <motion.li key={x.title} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + n * 0.1 }} className="flex gap-3">
+                        <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-iris to-fuchsia">
+                          <Check size={13} className="text-white" />
+                        </span>
+                        <div>
+                          <div className="font-semibold text-white">{x.title}</div>
+                          <div className="mt-0.5 text-[14px] leading-relaxed text-white/60">{x.body}</div>
+                        </div>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -229,45 +212,6 @@ export function Roles() {
         ))}
       </div>
     </section>
-  );
-}
-
-/* ── Use cases (business framing) ── */
-const ucIcon: Record<string, typeof CreditCard> = {
-  "fintech-support": CreditCard,
-  "engineering-knowledge": Code2,
-  "serverless-mcp": Cloud,
-  "partner-agents": Users,
-  "regulated-knowledge": Landmark,
-  "agent-distribution": Boxes,
-};
-
-export function UseCaseGrid({ limit }: { limit?: number }) {
-  const list = limit ? useCases.slice(0, limit) : useCases;
-  return (
-    <div className="mx-auto grid max-w-6xl gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {list.map((u, i) => {
-        const Icon = ucIcon[u.slug] ?? Boxes;
-        return (
-          <Reveal key={u.slug} delay={(i % 3) * 0.08} className="h-full">
-            <Link href={`/use-cases#${u.slug}`} className="card group flex h-full flex-col overflow-hidden transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-iris/10">
-              <div className="relative flex h-36 items-end justify-between overflow-hidden bg-ink p-6">
-                <div className="aurora absolute inset-0 opacity-50 transition duration-500 group-hover:scale-110 group-hover:opacity-80" aria-hidden />
-                <span className="relative font-mono text-[11px] uppercase tracking-[0.14em] text-white/70">{u.industry}</span>
-                <Icon size={44} strokeWidth={1.2} className="relative text-white/90 transition group-hover:-translate-y-1" />
-              </div>
-              <div className="flex flex-1 flex-col p-6">
-                <h3 className="text-lg font-semibold leading-snug">{u.title}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate">{u.outcome}</p>
-                <span className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-iris">
-                  See how it works <ArrowRight size={14} className="transition group-hover:translate-x-0.5" />
-                </span>
-              </div>
-            </Link>
-          </Reveal>
-        );
-      })}
-    </div>
   );
 }
 

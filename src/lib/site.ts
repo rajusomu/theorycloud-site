@@ -196,8 +196,49 @@ export const products: Product[] = [
   },
 ];
 
+/**
+ * FaceTheory: the client-delivery framework (github.com/theory-cloud/FaceTheory).
+ * Shown in the homepage platform section only for now. It has no product page yet,
+ * so its "Explore" link goes to the repo.
+ */
+export const faceTheory: Product = {
+  slug: "facetheory",
+  name: "FaceTheory",
+  kicker: "Web experiences",
+  tagline: "Fast, consistent web experiences from the same stack as your backend.",
+  summary:
+    "FaceTheory is the AWS-first TypeScript client-delivery framework for the Theory Cloud stack. It renders pages server-side, at build time, incrementally or as a hydrated single-page shell, across React, Vue and Svelte.",
+  docs: "https://github.com/theory-cloud/FaceTheory",
+  points: [
+    { title: "Three render modes", body: "SSR, SSG and blocking ISR, plus an SPA client runtime." },
+    { title: "React, Vue or Svelte", body: "Adapters for the frameworks your teams already use." },
+    { title: "Deterministic hydration", body: "Server-rendered HTML matches the hydrated page exactly." },
+    { title: "Deploys through AppTheory", body: "A paved AWS path through AppTheory's SSR site construct." },
+  ],
+  snippet: { label: "app.ts", lines: ['import { createFaceApp } from "@theory-cloud/facetheory";'] },
+  specs: [
+    { label: "Render modes", value: "SSR · SSG · ISR" },
+    { label: "Adapters", value: "React · Vue · Svelte" },
+    { label: "Runtime", value: "Node 20+, TypeScript" },
+    { label: "License", value: "Apache-2.0" },
+  ],
+};
+
+/** Products shown in the homepage platform section, in tab order. */
+export const platformProducts: Product[] = [products[0], faceTheory, ...products.slice(1)];
+
 /** Business-facing layer for each product: what a buyer gets, in their language. */
 export const productValue: Record<string, { pitch: string; bestFor: string[]; value: { title: string; body: string }[] }> = {
+  facetheory: {
+    pitch:
+      "Give customers fast, reliable web experiences delivered from the same AWS stack your backend runs on. Pay Theory is putting FaceTheory into production on its checkout page.",
+    bestFor: ["Product teams", "Frontend engineers", "Ecommerce & checkout"],
+    value: [
+      { title: "Pages that load fast", body: "Choose server rendering, static builds or incremental updates for each page." },
+      { title: "One stack, front to back", body: "Your web experience deploys alongside the services it calls." },
+      { title: "Keep your framework", body: "Teams keep building in React, Vue or Svelte." },
+    ],
+  },
   theorymcp: {
     pitch:
       "Give every customer, partner and employee an AI agent that knows who they are, respects what they're allowed to see, and remembers their history. Even when you switch AI providers.",

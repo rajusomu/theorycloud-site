@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Unbounded } from "next/font/google";
+import { Geist_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 
-const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
+const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
-const unbounded = Unbounded({ variable: "--font-unbounded", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.theorycloud.ai"),
@@ -27,7 +26,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${unbounded.variable}`}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${geistMono.variable}`}>
       <body className="antialiased">
         <Nav />
         <main>{children}</main>
