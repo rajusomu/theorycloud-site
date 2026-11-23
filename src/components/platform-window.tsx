@@ -89,7 +89,7 @@ export function PlatformTabs() {
     <section id="platform" className="relative scroll-mt-20 overflow-hidden px-4 py-28 sm:px-6">
       <SectionHead
         eyebrow="The platform"
-        title={<>Everything you need to launch AI agents <em>with confidence.</em></>}
+        title={<>Everything you need to launch <em>with confidence.</em></>}
         body="Start with one product or use the whole platform. Each product removes a reason AI projects stall."
       />
 
