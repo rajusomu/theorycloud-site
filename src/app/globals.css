@@ -1,26 +1,140 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ───────────────────────── Theory Cloud design tokens ─────────────────────────
+   Porcelain  #F5F6FA  page background (cool, not cream)
+   Ink        #0B0F1A  text, dark "terminal" panels
+   Iris       #5546FF  primary action / route segments
+   Fuchsia    #C13CFF  gradient midpoint for accent headings
+   Apricot    #FF9F6B  warm glow (hero aurora, highlights)
+   Verified   #14B8A6  resolved / checksum-ok states
+   Slate      #5B6478  secondary text
+------------------------------------------------------------------------------- */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  --color-porcelain: #f5f6fa;
+  --color-paper: #ffffff;
+  --color-ink: #0b0f1a;
+  --color-ink-2: #141a2b;
+  --color-ink-3: #1d2438;
+  --color-slate: #5b6478;
+  --color-mist: #e6e8f0;
+  --color-line: #dfe2ec;
+  --color-iris: #5546ff;
+  --color-iris-soft: #ecebff;
+  --color-fuchsia: #c13cff;
+  --color-apricot: #ff9f6b;
+  --color-apricot-soft: #fff1e8;
+  --color-verified: #14b8a6;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --font-display: var(--font-unbounded), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-blink: blink 1.1s steps(1) infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-porcelain);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-iris);
+  color: white;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-iris);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@layer components {
+/* Display type: Unbounded — wide, geometric, futuristic. Accent words get a vibrant gradient. */
+.display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+.display em,
+.grad {
+  font-style: normal;
+  background: linear-gradient(95deg, var(--color-iris) 0%, var(--color-fuchsia) 50%, var(--color-apricot) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.on-dark .display em,
+.on-dark.display em,
+.on-dark .grad {
+  background-image: linear-gradient(95deg, #9d93ff 0%, #f08bff 45%, #ffb38a 75%, #5eead4 100%);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-slate);
+}
+
+/* Aurora glow used behind hero and CTA bands */
+.aurora {
+  background:
+    radial-gradient(40% 55% at 22% 18%, rgba(255, 159, 107, 0.55), transparent 70%),
+    radial-gradient(45% 60% at 78% 10%, rgba(85, 70, 255, 0.35), transparent 70%),
+    radial-gradient(60% 50% at 50% 80%, rgba(20, 184, 166, 0.14), transparent 70%);
+  filter: blur(10px);
+}
+
+/* Faint dotted grid, like a route map */
+.grid-dots {
+  background-image: radial-gradient(rgba(11, 15, 26, 0.12) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.terminal {
+  background: linear-gradient(180deg, var(--color-ink-2), var(--color-ink));
+  color: #d7dbea;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 30px 80px -30px rgba(11, 15, 26, 0.55);
+}
+
+.card {
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  border-radius: 20px;
+}
+
+.mask-fade-x {
+  mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+}
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

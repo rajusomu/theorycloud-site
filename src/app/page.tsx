@@ -1,103 +1,64 @@
-import Image from "next/image";
+import { TrustDemo } from "@/components/trust-demo";
+import { Button, CtaBand, Reveal, SectionHead } from "@/components/ui";
+import { Engagement, PlatformTabs, Problem, ProofBar, Roles, Shifts, Trust, UseCaseGrid } from "@/components/home-sections";
+import { CustomerFeature } from "@/components/customer-feature";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <>
+      {/* Hero */}
+      <section className="relative -mt-[100px] overflow-hidden px-4 pb-20 pt-[160px] sm:px-6">
+        <div className="aurora pointer-events-none absolute inset-x-0 -top-20 h-[760px]" aria-hidden />
+        <div className="grid-dots pointer-events-none absolute inset-0 opacity-40 [mask-image:linear-gradient(to_bottom,black,transparent_70%)]" aria-hidden />
+        <div className="relative mx-auto max-w-5xl text-center">
+          <Reveal>
+            <p className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/60 px-3 py-1 text-[13px] text-ink/80 backdrop-blur">
+              <span className="h-1.5 w-1.5 rounded-full bg-verified" /> Trusted AI agents for customer-facing business
+            </p>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h1 className="display mt-7 text-[2.3rem] sm:text-[3.8rem] lg:text-[4.6rem]">
+              AI agents your customers <em>and regulators</em> can trust.
+            </h1>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <p className="mx-auto mt-7 max-w-2xl text-[18px] leading-relaxed text-slate">
+              Theory Cloud is the platform for putting AI agents in front of customers safely. Every answer is sourced,
+              every customer&apos;s data stays separate, and a person approves every change. Your pilot becomes a
+              service you can stand behind.
+            </p>
+          </Reveal>
+          <Reveal delay={0.24} className="mt-9 flex flex-wrap justify-center gap-3">
+            <Button href="/contact">Book a demo</Button>
+            <Button href="/use-cases" variant="ghost">See solutions</Button>
+          </Reveal>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        <Reveal delay={0.35} className="relative mt-16">
+          <TrustDemo />
+        </Reveal>
+      </section>
+
+      <ProofBar />
+      <Problem />
+      <PlatformTabs />
+      <Roles />
+
+      <section className="px-4 py-28 sm:px-6">
+        <SectionHead
+          eyebrow="Solutions"
+          title={<>What businesses launch with <em>Theory Cloud.</em></>}
+          body="From payment support desks to partner programs, these are six ways teams turn AI pilots into services customers use."
+        />
+        <div className="mt-14">
+          <UseCaseGrid />
+        </div>
+      </section>
+
+      <CustomerFeature />
+      <Shifts />
+      <Engagement />
+      <Trust />
+      <CtaBand />
+    </>
   );
 }
