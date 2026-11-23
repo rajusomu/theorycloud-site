@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* `dark:` utilities follow the site theme switch, not just the OS setting */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 /* ───────────────────────── Theory Cloud design tokens ─────────────────────────
    Porcelain  #F5F6FA  page background (cool, not cream)
    Ink        #0B0F1A  text, dark "terminal" panels
@@ -8,6 +11,9 @@
    Apricot    #FF9F6B  warm glow (hero aurora, highlights)
    Verified   #14B8A6  resolved / checksum-ok states
    Slate      #5B6478  secondary text
+   Night      #0B0F1A  dark panels that stay dark in both themes (CTA band, terminals)
+   Light/dark: the theme switch sets <html data-theme>; the overrides near the end of
+   this file swap the surface and text tokens, so utilities like bg-paper and text-ink follow.
 ------------------------------------------------------------------------------- */
 
 @theme {
@@ -25,6 +31,8 @@
   --color-apricot: #ff9f6b;
   --color-apricot-soft: #fff1e8;
   --color-verified: #14b8a6;
+  --color-night: #0b0f1a;
+  --color-night-2: #141a2b;
 
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
@@ -99,20 +107,23 @@ body {
 /* Aurora glow used behind hero and CTA bands */
 .aurora {
   background:
-    radial-gradient(40% 55% at 22% 18%, rgba(255, 159, 107, 0.55), transparent 70%),
-    radial-gradient(45% 60% at 78% 10%, rgba(85, 70, 255, 0.35), transparent 70%),
-    radial-gradient(60% 50% at 50% 80%, rgba(20, 184, 166, 0.14), transparent 70%);
+    radial-gradient(40% 55% at 22% 18%, rgb(255 159 107 / var(--aurora-warm, 0.55)), transparent 70%),
+    radial-gradient(45% 60% at 78% 10%, rgb(85 70 255 / var(--aurora-cool, 0.35)), transparent 70%),
+    radial-gradient(60% 50% at 50% 80%, rgb(20 184 166 / 0.14), transparent 70%);
   filter: blur(10px);
 }
 
 /* Faint dotted grid, like a route map */
 .grid-dots {
-  background-image: radial-gradient(rgba(11, 15, 26, 0.12) 1px, transparent 1px);
+  background-image: radial-gradient(var(--dot, rgba(11, 15, 26, 0.12)) 1px, transparent 1px);
   background-size: 22px 22px;
+}
+.grid-dots-light {
+  --dot: rgba(255, 255, 255, 0.5);
 }
 
 .terminal {
-  background: linear-gradient(180deg, var(--color-ink-2), var(--color-ink));
+  background: linear-gradient(180deg, var(--color-night-2), var(--color-night));
   color: #d7dbea;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 30px 80px -30px rgba(11, 15, 26, 0.55);
@@ -128,6 +139,41 @@ body {
   mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
 }
 
+}
+
+/* ───────────────────────── Dark theme ───────────────────────── */
+:root {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-porcelain: #070a13;
+  --color-paper: #0f1424;
+  --color-ink: #e8ebf5;
+  --color-slate: #98a2b8;
+  --color-mist: #1a2033;
+  --color-line: #242b41;
+  --color-iris: #7d72ff;
+  --color-iris-soft: #1d1b47;
+  --color-fuchsia: #d36bff;
+  --color-apricot-soft: #2e1f17;
+  --color-verified: #2dd4bf;
+  --color-night: #121933;
+  --color-night-2: #1a2342;
+  --aurora-warm: 0.22;
+  --aurora-cool: 0.3;
+  --dot: rgba(232, 235, 245, 0.08);
+}
+:root[data-theme="dark"] .terminal {
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.7);
+}
+:root[data-theme="dark"] .grid-dots-light {
+  --dot: rgba(255, 255, 255, 0.35);
+}
+html,
+body {
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {

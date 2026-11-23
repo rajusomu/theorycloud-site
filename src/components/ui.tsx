@@ -52,9 +52,9 @@ export function Button({
   external?: boolean;
 }) {
   const styles = {
-    primary: "bg-ink text-white hover:bg-iris",
-    ghost: "border border-line bg-white/70 text-ink hover:border-ink",
-    light: "bg-white text-ink hover:bg-apricot-soft",
+    primary: "bg-ink text-paper hover:bg-iris",
+    ghost: "border border-line bg-paper/70 text-ink hover:border-ink",
+    light: "bg-white text-night hover:bg-[#ffe9dc]",
   }[variant];
   return (
     <Link
@@ -81,9 +81,9 @@ export function CtaBand({
 }) {
   return (
     <section className="px-4 py-24 sm:px-6">
-      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[32px] bg-ink px-6 py-20 text-center text-white sm:px-16">
+      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[32px] bg-night px-6 py-20 text-center text-white sm:px-16">
         <div className="aurora pointer-events-none absolute inset-0 opacity-60" aria-hidden />
-        <div className="grid-dots pointer-events-none absolute inset-0 opacity-20 invert" aria-hidden />
+        <div className="grid-dots grid-dots-light pointer-events-none absolute inset-0 opacity-20" aria-hidden />
         <Reveal className="relative">
           <h2 className="on-dark display mx-auto max-w-3xl text-[1.9rem] sm:text-[3rem]">{title}</h2>
           <p className="mx-auto mt-5 max-w-xl text-[17px] leading-relaxed text-white/70">{body}</p>

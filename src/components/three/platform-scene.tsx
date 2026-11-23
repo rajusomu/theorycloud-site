@@ -2,7 +2,7 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Billboard, Float, Line, OrbitControls, RoundedBox } from "@react-three/drei";
-import { useMemo, useRef } from "react";
+import { createContext, useContext, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useCanvasLoop } from "./use-canvas-loop";
 
@@ -17,13 +17,18 @@ import { useCanvasLoop } from "./use-canvas-loop";
  * Drag to rotate.
  */
 
-const C = { iris: "#7b70ff", fuchsia: "#d66bff", apricot: "#ffad80", teal: "#2dd4bf", white: "#e9ebf5" };
+/* Palettes: pastel on the dark panel, saturated on a white window */
+const DARK = { iris: "#7b70ff", fuchsia: "#d66bff", apricot: "#ffad80", teal: "#2dd4bf", white: "#e9ebf5", packet: "#ffffff" };
+const LIGHT = { iris: "#5546ff", fuchsia: "#c13cff", apricot: "#ff9f6b", teal: "#14b8a6", white: "#d6d9ea", packet: "#0b0f1a" };
+const PaletteCtx = createContext(DARK);
+const usePalette = () => useContext(PaletteCtx);
 
 function Glossy({ color, emissive = 0.08 }: { color: string; emissive?: number }) {
   return <meshPhysicalMaterial color={color} roughness={0.22} metalness={0.15} clearcoat={1} clearcoatRoughness={0.2} emissive={color} emissiveIntensity={emissive} />;
 }
 
 function Routes() {
+  const C = usePalette();
   const g = useRef<THREE.Group>(null);
   const tiers = useMemo(() => {
     const ring = (n: number, r: number, y: number, off = 0) =>
@@ -74,13 +79,14 @@ function Routes() {
       ))}
       <mesh ref={packet}>
         <sphereGeometry args={[0.07, 16, 16]} />
-        <meshBasicMaterial color="#ffffff" />
+        <meshBasicMaterial color={C.packet} />
       </mesh>
     </group>
   );
 }
 
 function Runtimes() {
+  const C = usePalette();
   const orbit = useRef<THREE.Group>(null);
   useFrame((_, dt) => {
     if (orbit.current) orbit.current.rotation.y += dt * 0.6;
@@ -115,6 +121,7 @@ function Runtimes() {
 }
 
 function Library() {
+  const C = usePalette();
   const cards = useRef<(THREE.Group | null)[]>([]);
   const n = 9;
   useFrame((s) => {
@@ -155,6 +162,7 @@ function Library() {
 }
 
 function Gates() {
+  const C = usePalette();
   const rings = useRef<THREE.Group>(null);
   useFrame((_, dt) => {
     rings.current?.children.forEach((r, i) => {
@@ -183,6 +191,7 @@ function Gates() {
 }
 
 function Table() {
+  const C = usePalette();
   const cells = useRef<(THREE.Mesh | null)[]>([]);
   const n = 7;
   useFrame((s) => {
@@ -214,6 +223,7 @@ function Table() {
 }
 
 function Pages() {
+  const C = usePalette();
   const blocks = useRef<(THREE.Mesh | null)[]>([]);
   const beams = useRef<(THREE.Mesh | null)[]>([]);
   // Three pages: server-rendered, static, incremental. Each sits at its own depth.
@@ -279,7 +289,7 @@ function Pages() {
       {pages.map((pg, i) => (
         <mesh key={`b${i}`} ref={(m) => { beams.current[i] = m; }} position={[pg.x, -1, pg.z]}>
           <sphereGeometry args={[0.06, 16, 16]} />
-          <meshBasicMaterial color="#ffffff" transparent />
+          <meshBasicMaterial color={C.packet} transparent />
         </mesh>
       ))}
     </group>
@@ -295,7 +305,7 @@ const scenes: Record<string, () => React.JSX.Element> = {
   facetheory: Pages,
 };
 
-export default function PlatformScene({ slug }: { slug: string }) {
+export default function PlatformScene({ slug, theme = "dark" }: { slug: string; theme?: "dark" | "light" }) {
   const { ref, frameloop, reduce } = useCanvasLoop<HTMLDivElement>();
   const Scene = scenes[slug] ?? Routes;
   return (
@@ -305,7 +315,9 @@ export default function PlatformScene({ slug }: { slug: string }) {
         <directionalLight position={[4, 6, 3]} intensity={2} />
         <directionalLight position={[-4, 2, -3]} intensity={0.8} color="#c13cff" />
         <pointLight position={[0, -2, 2]} intensity={3} color="#ff9f6b" distance={8} />
-        <Scene key={slug} />
+        <PaletteCtx.Provider value={theme === "light" ? LIGHT : DARK}>
+          <Scene key={slug} />
+        </PaletteCtx.Provider>
         <OrbitControls enableZoom={false} enablePan={false} autoRotate={!reduce} autoRotateSpeed={0.6} minPolarAngle={0.6} maxPolarAngle={1.6} />
       </Canvas>
     </div>

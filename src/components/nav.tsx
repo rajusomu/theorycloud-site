@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { Logo } from "./logo";
+import { ThemeToggle } from "./theme";
 import { links, nav, products } from "@/lib/site";
 
 export function Nav() {
@@ -20,7 +21,7 @@ export function Nav() {
 
   return (
     <header className="sticky top-0 z-50">
-      <div className="bg-ink text-[13px] text-white/80">
+      <div className="bg-night text-[13px] text-white/80">
         <div className="mx-auto flex max-w-7xl items-center justify-center gap-3 px-4 py-2">
           <span className="rounded-full bg-white/10 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-apricot">New</span>
           <span className="truncate">New: launch branded AI agents for every partner from one setup.</span>
@@ -83,14 +84,18 @@ export function Nav() {
           </ul>
 
           <div className="hidden items-center gap-2 lg:flex">
-            <Link href={links.demo} className="group inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-sm font-medium text-white hover:bg-iris">
+            <ThemeToggle />
+            <Link href={links.demo} className="group inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-sm font-medium text-paper hover:bg-iris">
               Book a demo <ArrowRight size={14} className="transition group-hover:translate-x-0.5" />
             </Link>
           </div>
 
+          <div className="flex items-center gap-1 lg:hidden">
+          <ThemeToggle />
           <button className="rounded-full p-2 lg:hidden" onClick={() => setOpen((o) => !o)} aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open}>
             {open ? <X size={22} /> : <Menu size={22} />}
           </button>
+          </div>
         </nav>
 
         {open && (
@@ -112,7 +117,7 @@ export function Nav() {
                 </li>
               ))}
             </ul>
-            <Link href={links.demo} onClick={() => setOpen(false)} className="flex w-full items-center justify-center gap-2 rounded-full bg-ink py-3 text-sm font-medium text-white">
+            <Link href={links.demo} onClick={() => setOpen(false)} className="flex w-full items-center justify-center gap-2 rounded-full bg-ink py-3 text-sm font-medium text-paper">
               Book a demo <ArrowRight size={14} />
             </Link>
           </div>

@@ -24,7 +24,7 @@ export default function UseCasesPage() {
         </Reveal>
         <nav aria-label="Solutions" className="relative mx-auto mt-10 flex max-w-5xl flex-wrap justify-center gap-2">
           {useCases.map((u) => (
-            <a key={u.slug} href={`#${u.slug}`} className="rounded-full border border-line bg-white/80 px-4 py-2 text-sm hover:border-ink">
+            <a key={u.slug} href={`#${u.slug}`} className="rounded-full border border-line bg-paper/80 px-4 py-2 text-sm hover:border-ink">
               {u.industry}
             </a>
           ))}

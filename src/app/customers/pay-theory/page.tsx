@@ -65,7 +65,7 @@ export default function PayTheoryStory() {
           ))}
         </ul>
 
-        <figure className="on-dark my-12 rounded-[24px] bg-ink p-8 text-white sm:p-10">
+        <figure className="on-dark my-12 rounded-[24px] bg-night p-8 text-white sm:p-10">
           <blockquote className="display text-[1.3rem] leading-snug sm:text-[1.6rem]">
             “[Customer quote to be supplied by Pay Theory and approved before launch.]”
           </blockquote>

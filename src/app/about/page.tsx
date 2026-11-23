@@ -31,7 +31,7 @@ export default function AboutPage() {
         <div className="mx-auto grid max-w-6xl gap-px overflow-hidden rounded-[24px] border border-line bg-line sm:grid-cols-2">
           {beliefs.map(([t, b], i) => (
             <Reveal key={t} delay={(i % 2) * 0.08} className="h-full">
-              <div className="h-full bg-white p-8">
+              <div className="h-full bg-paper p-8">
                 <h2 className="display text-[1.25rem]">{t}</h2>
                 <p className="mt-3 leading-relaxed text-slate">{b}</p>
               </div>

@@ -14,14 +14,14 @@ import { Reveal, SectionHead } from "./ui";
 
 function Frame({ app, url, children }: { app: string; url: string; children: React.ReactNode }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-2xl shadow-iris/10">
+    <div className="overflow-hidden rounded-2xl border border-line bg-paper shadow-2xl shadow-iris/10">
       <div className="flex items-center gap-3 border-b border-line bg-porcelain px-4 py-2.5">
         <span className="flex gap-1.5" aria-hidden>
           <span className="h-2.5 w-2.5 rounded-full bg-[#ff6b6b]/70" />
           <span className="h-2.5 w-2.5 rounded-full bg-[#ffc44d]/70" />
           <span className="h-2.5 w-2.5 rounded-full bg-[#4dd68a]/70" />
         </span>
-        <span className="min-w-0 flex-1 truncate rounded-md bg-white px-3 py-1 font-mono text-[11px] text-slate">{url}</span>
+        <span className="min-w-0 flex-1 truncate rounded-md bg-paper px-3 py-1 font-mono text-[11px] text-slate">{url}</span>
         <span className="hidden text-[11px] font-medium text-slate sm:inline">{app}</span>
       </div>
       <div className="h-[430px] overflow-hidden text-[13px]">{children}</div>
@@ -34,8 +34,8 @@ function Tag({ children, tone = "slate" }: { children: React.ReactNode; tone?: "
     slate: "bg-porcelain text-slate",
     iris: "bg-iris-soft text-iris",
     verified: "bg-verified/10 text-verified",
-    apricot: "bg-apricot-soft text-[#c2622f]",
-    danger: "bg-red-50 text-red-600",
+    apricot: "bg-apricot-soft text-[#c2622f] dark:text-apricot",
+    danger: "bg-red-50 text-red-600 dark:bg-red-500/15 dark:text-red-400",
   }[tone];
   return <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium ${t}`}>{children}</span>;
 }
@@ -63,7 +63,7 @@ function PayoutsScreen() {
             <span className="font-semibold">Payouts</span>
             <div className="flex gap-1 rounded-full bg-porcelain p-0.5">
               {(["All", "On hold", "Paid"] as const).map((f) => (
-                <button key={f} onClick={() => setFilter(f)} className={`rounded-full px-2.5 py-1 text-[11px] font-medium transition ${filter === f ? "bg-white text-ink shadow-sm" : "text-slate"}`}>
+                <button key={f} onClick={() => setFilter(f)} className={`rounded-full px-2.5 py-1 text-[11px] font-medium transition ${filter === f ? "bg-paper text-ink shadow-sm" : "text-slate"}`}>
                   {f}
                 </button>
               ))}
@@ -91,7 +91,7 @@ function PayoutsScreen() {
             <span className="text-[11px] uppercase tracking-[0.12em] text-slate">Payout {cur.id}</span>
             <span className="display mt-1 text-[1.5rem]">{cur.amount}</span>
             <Tag tone={tone(cur.status)}>{cur.eta}</Tag>
-            <div className="mt-4 rounded-xl border border-line bg-white p-3">
+            <div className="mt-4 rounded-xl border border-line bg-paper p-3">
               <span className="text-[11px] font-semibold text-iris">Why this status</span>
               <p className="mt-1 leading-relaxed">{cur.reason}</p>
               <span className="mt-2 inline-flex items-center gap-1 rounded-md bg-porcelain px-2 py-1 font-mono text-[10.5px] text-slate">
@@ -145,7 +145,7 @@ function PartnersScreen() {
                   onClick={() => setPartners((ps) => ps.map((y) => (y.slug === x.slug ? { ...y, on: !y.on } : y)))}
                   className={`relative h-5 w-9 shrink-0 rounded-full transition ${x.on ? "bg-verified" : "bg-line"}`}
                 >
-                  <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-all ${x.on ? "left-[18px]" : "left-0.5"}`} />
+                  <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-paper shadow transition-all ${x.on ? "left-[18px]" : "left-0.5"}`} />
                 </button>
               </li>
             ))}
@@ -243,7 +243,7 @@ function KnowledgeScreen() {
           <p className="mt-1 font-mono text-[10.5px] text-slate">{u.id} · v{u.version} · used by {u.agents} agents</p>
           <div className="mt-3 space-y-1.5 rounded-xl border border-line bg-porcelain/60 p-3">
             {u.change.map((c) => (
-              <p key={c} className={`rounded-md px-2 py-1 leading-relaxed ${u.status === "Live" ? "bg-white" : "bg-verified/10 text-[#0b6b61]"}`}>
+              <p key={c} className={`rounded-md px-2 py-1 leading-relaxed ${u.status === "Live" ? "bg-paper" : "bg-verified/10 text-[#0b6b61] dark:text-verified"}`}>
                 {u.status === "Live" ? "" : "+ "}
                 {c}
               </p>
@@ -256,14 +256,14 @@ function KnowledgeScreen() {
           <button
             onClick={approve}
             disabled={u.status === "Live"}
-            className="mt-4 inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-ink py-2.5 text-[12.5px] font-medium text-white transition enabled:hover:bg-iris disabled:cursor-not-allowed disabled:bg-line disabled:text-slate"
+            className="mt-4 inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-ink py-2.5 text-[12.5px] font-medium text-paper transition enabled:hover:bg-iris disabled:cursor-not-allowed disabled:bg-line disabled:text-slate"
           >
             {u.status === "Live" ? <><Check size={13} /> Live for all agents</> : "Approve & publish"}
           </button>
         </div>
         <AnimatePresence>
           {toast && (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-ink px-4 py-2 text-[12px] text-white shadow-xl">
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-night px-4 py-2 text-[12px] text-white shadow-xl">
               <Check size={13} className="text-verified" /> {toast}
             </motion.div>
           )}
@@ -303,7 +303,7 @@ function ReleasesScreen() {
             <span className="font-semibold">reviewer agent</span>
             <span className="ml-2 font-mono text-[11px] text-slate">v2.4.0 · sha256 9f3c…e21a</span>
           </div>
-          <button onClick={sync} disabled={running} className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-[12px] font-medium text-white transition hover:bg-iris disabled:opacity-60">
+          <button onClick={sync} disabled={running} className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-[12px] font-medium text-paper transition hover:bg-iris disabled:opacity-60">
             {running ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />} Verify &amp; sync all repos
           </button>
         </div>
@@ -351,14 +351,14 @@ export function UseCaseScreens() {
         body="Theory Cloud runs behind the screens your customers, partners and teams already use. Try these examples. They're interactive."
       />
       <Reveal className="mx-auto mt-12 max-w-6xl">
-        <div role="tablist" aria-label="Use cases" className="mx-auto flex w-fit max-w-full gap-1 overflow-x-auto rounded-full border border-line bg-white p-1">
+        <div role="tablist" aria-label="Use cases" className="mx-auto flex w-fit max-w-full gap-1 overflow-x-auto rounded-full border border-line bg-paper p-1">
           {showcase.map((s, i) => (
             <button
               key={s.slug}
               role="tab"
               aria-selected={i === active}
               onClick={() => setActive(i)}
-              className={`relative shrink-0 whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-medium transition ${i === active ? "text-white" : "text-ink/70 hover:text-ink"}`}
+              className={`relative shrink-0 whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-medium transition ${i === active ? "text-paper" : "text-ink/70 hover:text-ink"}`}
             >
               {i === active && <motion.span layoutId="uc-pill" className="absolute inset-0 rounded-full bg-ink" transition={{ type: "spring", bounce: 0.15, duration: 0.5 }} />}
               <span className="relative">{s.label}</span>

@@ -9,7 +9,7 @@ import { products, tiers } from "@/lib/site";
 type Errors = Partial<Record<"name" | "email" | "company" | "form", string>>;
 
 const field =
-  "mt-1.5 w-full rounded-xl border border-line bg-white px-4 py-3 text-[15px] outline-none transition placeholder:text-slate/60 focus:border-iris focus:ring-4 focus:ring-iris/10";
+  "mt-1.5 w-full rounded-xl border border-line bg-paper px-4 py-3 text-[15px] outline-none transition placeholder:text-slate/60 focus:border-iris focus:ring-4 focus:ring-iris/10";
 
 export function DemoForm() {
   const params = useSearchParams();
@@ -109,7 +109,7 @@ export function DemoForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink py-3.5 text-[15px] font-medium text-white transition hover:bg-iris disabled:opacity-60 sm:w-auto sm:px-8"
+        className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink py-3.5 text-[15px] font-medium text-paper transition hover:bg-iris disabled:opacity-60 sm:w-auto sm:px-8"
       >
         {status === "sending" ? <Loader2 size={16} className="animate-spin" /> : null}
         {status === "sending" ? "Sending request" : "Book a demo"}

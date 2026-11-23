@@ -1,5 +1,6 @@
 import { Button, CtaBand, Reveal } from "@/components/ui";
-import { Engagement, PlatformTabs, Problem, Roles, Shifts, Trust } from "@/components/home-sections";
+import { Engagement, Problem, Roles, Shifts, Trust } from "@/components/home-sections";
+import { PlatformTabs } from "@/components/platform-window";
 import { CustomerFeature } from "@/components/customer-feature";
 import { PartnerCarousel } from "@/components/partner-carousel";
 import { UseCaseScreens } from "@/components/use-case-screens";
@@ -14,13 +15,8 @@ export default function Home() {
         <div className="grid-dots pointer-events-none absolute inset-0 opacity-40 [mask-image:linear-gradient(to_bottom,black,transparent_70%)]" aria-hidden />
         <div className="relative mx-auto grid max-w-7xl items-center gap-6 lg:grid-cols-[1fr_1.05fr] [&>*]:min-w-0">
           <div>
-            <Reveal>
-              <p className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/60 px-3 py-1 text-[13px] text-ink/80 backdrop-blur">
-                <span className="h-1.5 w-1.5 rounded-full bg-verified" /> Trusted AI agents for customer-facing business
-              </p>
-            </Reveal>
             <Reveal delay={0.08}>
-              <h1 className="display mt-7 text-[2.6rem] sm:text-[4rem] xl:text-[4.6rem]">
+              <h1 className="display text-[2.6rem] sm:text-[4rem] xl:text-[4.6rem]">
                 AI agents your customers <em>and regulators</em> can trust.
               </h1>
             </Reveal>

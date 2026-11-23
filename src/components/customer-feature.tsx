@@ -23,7 +23,7 @@ export function CustomerFeature() {
               Read the story <ArrowRight size={16} />
             </Link>
           </div>
-          <div className="on-dark relative overflow-hidden bg-ink p-8 text-white sm:p-12">
+          <div className="on-dark relative overflow-hidden bg-night p-8 text-white sm:p-12">
             <div className="aurora absolute inset-0 opacity-50" aria-hidden />
             <div className="relative grid h-full grid-cols-2 content-between gap-6">
               {[

@@ -30,7 +30,7 @@ export default function ContactPage() {
           <ol className="mt-10 space-y-6">
             {agenda.map(([t, b], i) => (
               <li key={t} className="flex gap-4">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ink font-mono text-xs text-white">{i + 1}</span>
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ink font-mono text-xs text-paper">{i + 1}</span>
                 <div>
                   <h2 className="font-semibold">{t}</h2>
                   <p className="mt-1 text-[15px] text-slate">{b}</p>

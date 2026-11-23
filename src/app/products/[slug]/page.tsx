@@ -36,7 +36,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <div className="mt-6 flex flex-wrap items-center gap-2">
               <span className="text-xs text-slate">Best for</span>
               {v.bestFor.map((b) => (
-                <span key={b} className="rounded-full bg-white px-3 py-1 text-xs font-medium text-iris">{b}</span>
+                <span key={b} className="rounded-full bg-paper px-3 py-1 text-xs font-medium text-iris">{b}</span>
               ))}
             </div>
             <div className="mt-9 flex flex-wrap gap-3">

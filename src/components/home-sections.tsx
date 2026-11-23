@@ -2,10 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowRight,
-  ArrowUpRight,
   Check,
   Copy,
   ShieldCheck,
@@ -19,9 +17,9 @@ import {
   Cpu,
   Handshake,
 } from "lucide-react";
-import { faceTheory, platformProducts, productValue, products } from "@/lib/site";
+import { products } from "@/lib/site";
 import { Reveal, SectionHead } from "./ui";
-import { PlatformCanvas } from "./three/lazy";
+import { problemIcons } from "./problem-icons";
 
 /* ── The business problem ── */
 const problems = [
@@ -40,113 +38,18 @@ export function Problem() {
         body="The demo works. Then legal, security and customer experience teams ask questions nobody can answer. Theory Cloud answers them from day one."
       />
       <div className="mx-auto mt-16 grid max-w-6xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {problems.map((p, i) => (
+        {problems.map((p, i) => {
+          const Icon = problemIcons[i];
+          return (
           <Reveal key={p.after} delay={i * 0.08} className="card group h-full p-7 transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-fuchsia/10">
-            <p className="text-sm text-slate line-through decoration-apricot decoration-2">{p.before}</p>
+            <Icon />
+            <p className="mt-6 text-sm text-slate line-through decoration-apricot decoration-2">{p.before}</p>
             <h3 className="display mt-6 text-[1.3rem]">{p.after}</h3>
             <p className="mt-3 text-[15px] leading-relaxed text-slate">{p.body}</p>
           </Reveal>
-        ))}
+          );
+        })}
       </div>
-    </section>
-  );
-}
-
-/* ── Platform: tabbed product explorer, business framing ── */
-export function PlatformTabs() {
-  const [active, setActive] = useState(0);
-  const p = platformProducts[active];
-  const v = productValue[p.slug];
-  return (
-    <section id="platform" className="scroll-mt-28 px-4 py-28 sm:px-6">
-      <SectionHead
-        eyebrow="The platform"
-        title={<>Everything you need to launch AI agents <em>with confidence.</em></>}
-        body="Start with one product or use the whole platform. Each product removes a reason AI projects stall."
-      />
-      <Reveal className="mx-auto mt-14 max-w-6xl">
-        <div role="tablist" aria-label="Products" className="flex gap-1 overflow-x-auto rounded-full border border-line bg-white p-1">
-          {platformProducts.map((x, i) => (
-            <button
-              key={x.slug}
-              role="tab"
-              aria-selected={i === active}
-              onClick={() => setActive(i)}
-              className={`relative shrink-0 flex-1 whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-medium transition ${i === active ? "text-white" : "text-ink/70 hover:text-ink"}`}
-            >
-              {i === active && <motion.span layoutId="tab-pill" className="absolute inset-0 rounded-full bg-ink" transition={{ type: "spring", bounce: 0.15, duration: 0.5 }} />}
-              <span className="relative">{x.kicker}</span>
-            </button>
-          ))}
-        </div>
-
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={p.slug}
-            role="tabpanel"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.35 }}
-            className="card mt-4 grid gap-10 overflow-hidden p-6 sm:p-10 lg:grid-cols-[1fr_1fr] [&>*]:min-w-0"
-          >
-            <div>
-              <p className="eyebrow">{p.name}</p>
-              <h3 className="display mt-3 text-[1.6rem] sm:text-[2rem]">{p.tagline}</h3>
-              <p className="mt-4 leading-relaxed text-slate">{v.pitch}</p>
-              <div className="mt-6 flex flex-wrap items-center gap-2">
-                <span className="text-xs text-slate">Best for</span>
-                {v.bestFor.map((b) => (
-                  <span key={b} className="rounded-full bg-iris-soft px-3 py-1 text-xs font-medium text-iris">{b}</span>
-                ))}
-              </div>
-              <div className="mt-8 flex flex-wrap gap-4 text-sm font-medium">
-                {p.slug === faceTheory.slug ? (
-                  <Link href={p.docs} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-iris hover:underline">
-                    Explore {p.name} on GitHub <ArrowUpRight size={14} />
-                  </Link>
-                ) : (
-                  <Link href={`/products/${p.slug}`} className="inline-flex items-center gap-1 text-iris hover:underline">
-                    Explore {p.name} <ArrowRight size={14} />
-                  </Link>
-                )}
-                <Link href="/contact" className="inline-flex items-center gap-1 text-ink/70 hover:text-ink">
-                  Talk to sales <ArrowUpRight size={14} />
-                </Link>
-              </div>
-            </div>
-            <div className="relative">
-              <div className="aurora absolute -inset-6 opacity-60" aria-hidden />
-              <div className="on-dark terminal relative overflow-hidden rounded-2xl">
-                {/* Interactive 3D model of what this product does */}
-                <div className="relative h-[260px] sm:h-[300px]">
-                  <div className="grid-dots pointer-events-none absolute inset-0 opacity-25 invert" aria-hidden />
-                  <PlatformCanvas slug={p.slug} />
-                  <span className="pointer-events-none absolute right-4 top-4 rounded-full bg-white/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-white/55">
-                    Drag to rotate
-                  </span>
-                </div>
-                <div className="border-t border-white/10 p-6 sm:p-7">
-                  <p className="text-[12px] uppercase tracking-[0.14em] text-white/45">What your business gets</p>
-                  <ul className="mt-5 space-y-4">
-                    {v.value.map((x, n) => (
-                      <motion.li key={x.title} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + n * 0.1 }} className="flex gap-3">
-                        <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-iris to-fuchsia">
-                          <Check size={13} className="text-white" />
-                        </span>
-                        <div>
-                          <div className="font-semibold text-white">{x.title}</div>
-                          <div className="mt-0.5 text-[14px] leading-relaxed text-white/60">{x.body}</div>
-                        </div>
-                      </motion.li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-      </Reveal>
     </section>
   );
 }
@@ -173,7 +76,7 @@ export function ProductVisual({ slug }: { slug: string }) {
       </div>
       <dl className="relative mt-3 grid grid-cols-2 gap-2">
         {p.specs.map((s) => (
-          <div key={s.label} className="rounded-xl border border-line bg-white/90 px-4 py-3">
+          <div key={s.label} className="rounded-xl border border-line bg-paper/90 px-4 py-3">
             <dt className="text-[11px] text-slate">{s.label}</dt>
             <dd className="mt-0.5 text-sm font-medium">{s.value}</dd>
           </div>
@@ -198,7 +101,7 @@ export function Roles() {
       <div className="mx-auto mt-14 grid max-w-6xl gap-px overflow-hidden rounded-[24px] border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
         {roles.map((r, i) => (
           <Reveal key={r.role} delay={i * 0.08} className="h-full">
-            <div className="group flex h-full flex-col bg-white p-7 transition hover:bg-porcelain">
+            <div className="group flex h-full flex-col bg-paper p-7 transition hover:bg-porcelain">
               <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-iris to-fuchsia text-white shadow-lg shadow-fuchsia/20">
                 <r.icon size={20} />
               </span>
@@ -266,7 +169,7 @@ export function Engagement() {
           ))}
         </ol>
         <div className="mt-10 text-center">
-          <Link href="/contact" className="group inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-[15px] font-medium text-white hover:bg-iris">
+          <Link href="/contact" className="group inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-[15px] font-medium text-paper hover:bg-iris">
             Book your discovery call <ArrowRight size={16} className="transition group-hover:translate-x-0.5" />
           </Link>
         </div>
@@ -292,11 +195,11 @@ export function HowItWorks() {
       <ol className="mx-auto mt-14 grid max-w-6xl gap-px overflow-hidden rounded-[24px] border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
         {steps.map((s, i) => (
           <Reveal key={s.verb} delay={(i % 3) * 0.08} className="h-full">
-            <li className="flex h-full flex-col bg-white p-7">
+            <li className="flex h-full flex-col bg-paper p-7">
               <span className="font-mono text-xs text-iris">step {i + 1}</span>
               <h3 className="display mt-3 text-[1.3rem]">{s.verb}</h3>
               <p className="mt-2 flex-1 text-[15px] leading-relaxed text-slate">{s.body}</p>
-              <code className="mt-6 inline-block self-start rounded-lg bg-ink px-3 py-1.5 font-mono text-[12px] text-white/85">{s.code}</code>
+              <code className="mt-6 inline-block self-start rounded-lg bg-night px-3 py-1.5 font-mono text-[12px] text-white/85">{s.code}</code>
             </li>
           </Reveal>
         ))}

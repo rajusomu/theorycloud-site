@@ -38,7 +38,7 @@ export default function PricingPage() {
         <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-2 lg:grid-cols-4">
           {tiers.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.08} className="h-full">
-              <div className={`flex h-full flex-col rounded-[24px] p-7 ${t.highlight ? "bg-ink text-white shadow-2xl shadow-iris/20" : "card"}`}>
+              <div className={`flex h-full flex-col rounded-[24px] p-7 ${t.highlight ? "bg-night text-white shadow-2xl shadow-iris/20" : "card"}`}>
                 <div className="flex items-center justify-between">
                   <h2 className="display text-[1.4rem]">{t.name}</h2>
                   {t.highlight && <span className="rounded-full bg-apricot px-2.5 py-1 text-[11px] font-medium text-ink">Most chosen</span>}
@@ -47,7 +47,7 @@ export default function PricingPage() {
                 <Link
                   href={`/contact?plan=${t.name.toLowerCase()}`}
                   className={`group mt-6 inline-flex items-center justify-center gap-2 rounded-full py-3 text-sm font-medium transition ${
-                    t.highlight ? "bg-white text-ink hover:bg-apricot-soft" : "bg-ink text-white hover:bg-iris"
+                    t.highlight ? "bg-white text-night hover:bg-[#ffe9dc]" : "bg-ink text-paper hover:bg-iris"
                   }`}
                 >
                   Talk to sales <ArrowRight size={14} className="transition group-hover:translate-x-0.5" />
