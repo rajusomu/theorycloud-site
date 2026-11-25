@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import payTheoryLogo from "../../public/partners/pay-theory.png";
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { links } from "@/lib/site";
@@ -24,11 +25,11 @@ const partners: Partner[] = [
   {
     name: "Pay Theory",
     href: links.payTheory,
-    // Pay Theory's logo mark (public/partners/pay-theory.png). On dark cards it sits on a
+    // Pay Theory's logo mark (public/partners/pay-theory.png, imported so the path works under any base path). On dark cards it sits on a
     // light tile, because the deep purple would otherwise disappear.
     mark: (
       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg dark:bg-white">
-        <Image src="/partners/pay-theory.png" alt="" width={28} height={26} className="h-[26px] w-auto" />
+        <Image src={payTheoryLogo} alt="" className="h-[26px] w-auto" />
       </span>
     ),
   },

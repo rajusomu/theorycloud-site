@@ -11,6 +11,35 @@ type Errors = Partial<Record<"name" | "email" | "company" | "form", string>>;
 const field =
   "mt-1.5 w-full rounded-xl border border-line bg-paper px-4 py-3 text-[15px] outline-none transition placeholder:text-slate/60 focus:border-iris focus:ring-4 focus:ring-iris/10";
 
+/* The GitHub Pages build is static and has no /api/leads endpoint, so requests go by email */
+const STATIC_EXPORT = process.env.NEXT_PUBLIC_STATIC_EXPORT === "true";
+const SALES_EMAIL = "sales@theorycloud.ai";
+
+function emailRequest(data: Record<string, FormDataEntryValue | FormDataEntryValue[]>): Errors | null {
+  const text = (k: string) => String(data[k] ?? "").trim();
+  const errors: Errors = {};
+  if (!text("name")) errors.name = "Enter your name.";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text("email"))) errors.email = "Enter a valid work email.";
+  if (!text("company")) errors.company = "Enter your company.";
+  if (Object.keys(errors).length) return errors;
+  const interest = ([] as FormDataEntryValue[]).concat(data.interest ?? []).join(", ");
+  const body = [
+    `Name: ${text("name")}`,
+    `Email: ${text("email")}`,
+    `Company: ${text("company")}`,
+    text("role") && `Role: ${text("role")}`,
+    text("teamSize") && `Team size: ${text("teamSize")}`,
+    text("plan") && `Plan: ${text("plan")}`,
+    interest && `Interested in: ${interest}`,
+    text("message") && `\n${text("message")}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+  const subject = `Demo request: ${text("company")}`;
+  window.location.href = `mailto:${SALES_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  return null;
+}
+
 export function DemoForm() {
   const params = useSearchParams();
   const initialPlan = params.get("plan") ?? "";
@@ -23,6 +52,14 @@ export function DemoForm() {
     const data = { ...Object.fromEntries(fd.entries()), interest: fd.getAll("interest") };
     setStatus("sending");
     setErrors({});
+    if (STATIC_EXPORT) {
+      const problems = emailRequest(data);
+      if (problems) {
+        setErrors(problems);
+        setStatus("idle");
+      } else setStatus("sent");
+      return;
+    }
     try {
       const res = await fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
       if (res.ok) return setStatus("sent");
@@ -38,11 +75,19 @@ export function DemoForm() {
     return (
       <div className="card flex flex-col items-start p-8 sm:p-10" role="status">
         <CheckCircle2 className="text-verified" size={32} />
-        <h2 className="display mt-5 text-[1.8rem]">Request received.</h2>
-        <p className="mt-3 leading-relaxed text-slate">
-          A solutions engineer will email you within one business day to schedule your demo. While you wait, you can
-          connect a host to the public <span className="font-mono text-[13px] text-ink">theorycloud</span> namespace and try it yourself.
-        </p>
+        <h2 className="display mt-5 text-[1.8rem]">{STATIC_EXPORT ? "Almost there." : "Request received."}</h2>
+        {STATIC_EXPORT ? (
+          <p className="mt-3 leading-relaxed text-slate">
+            Your email app should have opened with your request filled in. Send it and a solutions engineer will reply
+            within one business day. If nothing opened, email{" "}
+            <a href={`mailto:${SALES_EMAIL}`} className="text-iris underline">{SALES_EMAIL}</a>.
+          </p>
+        ) : (
+          <p className="mt-3 leading-relaxed text-slate">
+            A solutions engineer will email you within one business day to schedule your demo. While you wait, you can
+            connect a host to the public <span className="font-mono text-[13px] text-ink">theorycloud</span> namespace and try it yourself.
+          </p>
+        )}
       </div>
     );
   }
